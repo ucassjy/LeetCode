@@ -1,3 +1,6 @@
+// time:  O(n)
+// space: O(n)
+
 /**
  * Definition for a binary tree node.
  * struct TreeNode {

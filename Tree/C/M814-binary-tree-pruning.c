@@ -1,5 +1,5 @@
 // time:  O(n)
-// space: O(n)
+// space: O(h)
 
 /**
  * Definition for a binary tree node.
