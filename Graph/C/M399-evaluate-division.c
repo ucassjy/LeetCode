@@ -1,3 +1,6 @@
+// time:  O(n+e)
+// space: O(n^2)
+
 /**
  * Return an array of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
@@ -6,17 +9,17 @@ double* calcEquation(char*** equations, int equationsRowSize, int equationsColSi
     *returnSize = queriesRowSize;
     double *res = (double*)malloc(queriesRowSize * sizeof(double));
     
-    char** vex = (char**)malloc(64 * sizeof(char*));
+    char** vex = (char**)malloc(64 * sizeof(char*));  // Set of verteices, strings given in equations
     double arc[64][64] = {0.0};
     int id[2] = {0};
     int f = 0;
-    for(int i = 0; i < equationsRowSize; i++){
+    // Fill the adjancency matrix
+	for(int i = 0; i < equationsRowSize; i++){
         for(int j = 0; j < 2; j++){
             int u;
             for(u = 0; u < f; u++)
-                if(!strcmp(vex[u], equations[i][j])){
+                if(!strcmp(vex[u], equations[i][j]))
                     break;
-                }
             if(u == f){
                 vex[f] = equations[i][j];
                 f++;
@@ -26,7 +29,7 @@ double* calcEquation(char*** equations, int equationsRowSize, int equationsColSi
         arc[id[0]][id[1]] = values[i];
         arc[id[1]][id[0]] = 1 / values[i];
     }
-    
+    // Look for the path from queries[i][0] to queries[i][1]
     for(int i = 0; i < queriesRowSize; i++){
         res[i] = -1.0;
         for(id[0] = 0; id[0] < f; id[0]++)
@@ -35,17 +38,17 @@ double* calcEquation(char*** equations, int equationsRowSize, int equationsColSi
         for(id[1] = 0; id[1] < f; id[1]++)
             if(!strcmp(vex[id[1]], queries[i][1]))
                 break;
-        if(id[0] == f || id[1] == f)
+        if(id[0] == f || id[1] == f) // At least one string in queries[i] not in equations
             continue;
         if(!strcmp(queries[i][0], queries[i][1])){
             res[i] = 1.0;
             continue;
         }
         
-        int arr[64] = {0};
+        int arr[64] = {0}; // Store the indexes of the vertices in the path, like a stack
         int usd[64] = {0};
-        int j = 0;
-        int k = 0;
+        int j = 0;         // The index of the vertex that is about to be in the path
+        int k = 0;         // Like the top index of the arr[64]
         arr[k] = id[0];  k++;  usd[id[0]] = 1;
         for(;arc[id[0]][j] == 0.0; j++);
         do{
