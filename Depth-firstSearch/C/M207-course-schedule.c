@@ -82,17 +82,6 @@ int getListLength(struct ListNode* head)
     return length;
 }
 
-void freeList(struct ListNode *list)
-{
-    struct ListNode *node;
-
-    while (list)
-    {
-        node = list;
-        list = list->next;
-        free(node);
-    }
-}
 bool isCylic(int course, int *visited, int *reStack, struct ListNode **lists)
 {
     struct ListNode *current = lists[course];
