@@ -1,16 +1,16 @@
 // time:  O(n^2)
 // space: O(n^2)
 
-bool dfs(int numCourses, int i, int j, int** oud, int* visited, int** noRing){
+bool dfs(int numCourses, int i, int j, int** oud, int* visited, int* noRing){
     if(visited[i])  return false;
     visited[i] = 1;
     
     for(; j < numCourses; j++){
         if(oud[i][j]){
-            if((*noRing)[j])  continue;
+            if(noRing[j])  continue;
             for(int k = 0; k < numCourses; k++){
                 if(oud[j][k]){
-                    if((*noRing)[k])  continue;
+                    if(noRing[k])  continue;
                     if(!dfs(numCourses, j, k, oud, visited, noRing))
                         return false;
                     break;
@@ -18,7 +18,7 @@ bool dfs(int numCourses, int i, int j, int** oud, int* visited, int** noRing){
             }
         }
     }
-    (*noRing)[i] = 1;
+    noRing[i] = 1;
     return true;
 }
 
@@ -43,7 +43,7 @@ bool canFinish(int numCourses, int** prerequisites, int prerequisitesRowSize, in
         for(int j = 0; j < numCourses; j++){
             if(oud[i][j]){
                 if(noRing[j])  continue;
-                if(!dfs(numCourses, i, j, oud, visited, &noRing))
+                if(!dfs(numCourses, i, j, oud, visited, noRing))
                     return false;
                 break;
             }
